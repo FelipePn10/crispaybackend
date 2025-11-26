@@ -6,7 +6,9 @@ import (
 )
 
 func main() {
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	}))
 	slog.SetDefault(logger)
 
 	cfg := config{
@@ -15,10 +17,11 @@ func main() {
 
 	api := application{
 		config: cfg,
+		logger: logger,
 	}
+
 	if err := api.run(api.mount()); err != nil {
 		slog.Error("application error", "error", err)
 		os.Exit(1)
 	}
-
 }
