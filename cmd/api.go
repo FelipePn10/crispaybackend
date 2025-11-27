@@ -23,7 +23,6 @@ func (app *application) mount() http.Handler {
 
 	r.Use(app.traceMiddleware)
 	r.Get("/health", app.healthHandler)
-	//r.Post("/didit/section/create", app.diditSectionCreate)
 
 	// r.Route("/v1", func(v1 chi.Router) {
 	// 	v1.Mount("/users", app.userRoutes())
@@ -41,25 +40,6 @@ func (app *application) healthHandler(w http.ResponseWriter, r *http.Request) {
 		"service":   "core-api",
 	}
 	app.writeJSON(w, http.StatusOK, resp)
-}
-
-// func (app *application) diditSectionCreate(w http.ResponseWriter, r *http.Request) {
-//
-// }
-
-// run
-func (app *application) run(h http.Handler) error {
-	srv := &http.Server{
-		Addr:         app.config.addr,
-		Handler:      h,
-		WriteTimeout: time.Second * 30,
-		ReadTimeout:  time.Second * 30,
-		IdleTimeout:  time.Minute,
-	}
-
-	log.Printf("Starting server on %s", app.config.addr)
-
-	return srv.ListenAndServe()
 }
 
 func (app *application) writeJSON(w http.ResponseWriter, status int, data map[string]any) {
@@ -88,6 +68,21 @@ func (app *application) traceMiddleware(next http.Handler) http.Handler {
 			slog.String("request_id", middleware.GetReqID(r.Context())),
 		)
 	})
+}
+
+// run
+func (app *application) run(h http.Handler) error {
+	srv := &http.Server{
+		Addr:         app.config.addr,
+		Handler:      h,
+		WriteTimeout: time.Second * 30,
+		ReadTimeout:  time.Second * 30,
+		IdleTimeout:  time.Minute,
+	}
+
+	log.Printf("Starting server on %s", app.config.addr)
+
+	return srv.ListenAndServe()
 }
 
 type application struct {
