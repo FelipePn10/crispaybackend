@@ -18,24 +18,22 @@ INSERT INTO verification_sessions (
     user_id,
     session_id,
     didit_session_id,
-    verification_url,
     user_email,
     user_first_name,
     user_last_name,
     status
-) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-RETURNING id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata
+) VALUES ($1, $2, $3, $4, $5, $6, $7)
+RETURNING id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata
 `
 
 type CreateVerificationSessionParams struct {
-	UserID          string
-	SessionID       string
-	DiditSessionID  sql.NullString
-	VerificationUrl sql.NullString
-	UserEmail       string
-	UserFirstName   sql.NullString
-	UserLastName    sql.NullString
-	Status          string
+	UserID         string
+	SessionID      string
+	DiditSessionID sql.NullString
+	UserEmail      string
+	UserFirstName  sql.NullString
+	UserLastName   sql.NullString
+	Status         string
 }
 
 func (q *Queries) CreateVerificationSession(ctx context.Context, arg CreateVerificationSessionParams) (VerificationSession, error) {
@@ -43,7 +41,6 @@ func (q *Queries) CreateVerificationSession(ctx context.Context, arg CreateVerif
 		arg.UserID,
 		arg.SessionID,
 		arg.DiditSessionID,
-		arg.VerificationUrl,
 		arg.UserEmail,
 		arg.UserFirstName,
 		arg.UserLastName,
@@ -56,7 +53,6 @@ func (q *Queries) CreateVerificationSession(ctx context.Context, arg CreateVerif
 		&i.SessionID,
 		&i.Status,
 		&i.DiditSessionID,
-		&i.VerificationUrl,
 		&i.UserEmail,
 		&i.UserFirstName,
 		&i.UserLastName,
@@ -98,7 +94,7 @@ func (q *Queries) CreateWebhookEvent(ctx context.Context, arg CreateWebhookEvent
 }
 
 const getVerificationSessionByDiditSessionID = `-- name: GetVerificationSessionByDiditSessionID :one
-SELECT id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
+SELECT id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
 WHERE didit_session_id = $1 LIMIT 1
 `
 
@@ -111,7 +107,6 @@ func (q *Queries) GetVerificationSessionByDiditSessionID(ctx context.Context, di
 		&i.SessionID,
 		&i.Status,
 		&i.DiditSessionID,
-		&i.VerificationUrl,
 		&i.UserEmail,
 		&i.UserFirstName,
 		&i.UserLastName,
@@ -124,7 +119,7 @@ func (q *Queries) GetVerificationSessionByDiditSessionID(ctx context.Context, di
 }
 
 const getVerificationSessionByID = `-- name: GetVerificationSessionByID :one
-SELECT id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
+SELECT id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
 WHERE id = $1 LIMIT 1
 `
 
@@ -137,7 +132,6 @@ func (q *Queries) GetVerificationSessionByID(ctx context.Context, id uuid.UUID) 
 		&i.SessionID,
 		&i.Status,
 		&i.DiditSessionID,
-		&i.VerificationUrl,
 		&i.UserEmail,
 		&i.UserFirstName,
 		&i.UserLastName,
@@ -150,7 +144,7 @@ func (q *Queries) GetVerificationSessionByID(ctx context.Context, id uuid.UUID) 
 }
 
 const getVerificationSessionBySessionID = `-- name: GetVerificationSessionBySessionID :one
-SELECT id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
+SELECT id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
 WHERE session_id = $1 LIMIT 1
 `
 
@@ -163,7 +157,6 @@ func (q *Queries) GetVerificationSessionBySessionID(ctx context.Context, session
 		&i.SessionID,
 		&i.Status,
 		&i.DiditSessionID,
-		&i.VerificationUrl,
 		&i.UserEmail,
 		&i.UserFirstName,
 		&i.UserLastName,
@@ -212,7 +205,7 @@ func (q *Queries) GetWebhookEventsBySessionID(ctx context.Context, sessionID str
 }
 
 const listVerificationSessionsByStatus = `-- name: ListVerificationSessionsByStatus :many
-SELECT id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
+SELECT id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
 WHERE status = $1 
 ORDER BY created_at DESC
 `
@@ -232,7 +225,6 @@ func (q *Queries) ListVerificationSessionsByStatus(ctx context.Context, status s
 			&i.SessionID,
 			&i.Status,
 			&i.DiditSessionID,
-			&i.VerificationUrl,
 			&i.UserEmail,
 			&i.UserFirstName,
 			&i.UserLastName,
@@ -255,7 +247,7 @@ func (q *Queries) ListVerificationSessionsByStatus(ctx context.Context, status s
 }
 
 const listVerificationSessionsByUserID = `-- name: ListVerificationSessionsByUserID :many
-SELECT id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
+SELECT id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata FROM verification_sessions 
 WHERE user_id = $1 
 ORDER BY created_at DESC
 `
@@ -275,7 +267,6 @@ func (q *Queries) ListVerificationSessionsByUserID(ctx context.Context, userID s
 			&i.SessionID,
 			&i.Status,
 			&i.DiditSessionID,
-			&i.VerificationUrl,
 			&i.UserEmail,
 			&i.UserFirstName,
 			&i.UserLastName,
@@ -297,24 +288,22 @@ func (q *Queries) ListVerificationSessionsByUserID(ctx context.Context, userID s
 	return items, nil
 }
 
-const updateDiditSessionData = `-- name: UpdateDiditSessionData :one
+const updateDiditSessionID = `-- name: UpdateDiditSessionID :one
 UPDATE verification_sessions 
 SET 
     didit_session_id = $2,
-    verification_url = $3,
     updated_at = NOW()
 WHERE session_id = $1
-RETURNING id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata
+RETURNING id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata
 `
 
-type UpdateDiditSessionDataParams struct {
-	SessionID       string
-	DiditSessionID  sql.NullString
-	VerificationUrl sql.NullString
+type UpdateDiditSessionIDParams struct {
+	SessionID      string
+	DiditSessionID sql.NullString
 }
 
-func (q *Queries) UpdateDiditSessionData(ctx context.Context, arg UpdateDiditSessionDataParams) (VerificationSession, error) {
-	row := q.db.QueryRowContext(ctx, updateDiditSessionData, arg.SessionID, arg.DiditSessionID, arg.VerificationUrl)
+func (q *Queries) UpdateDiditSessionID(ctx context.Context, arg UpdateDiditSessionIDParams) (VerificationSession, error) {
+	row := q.db.QueryRowContext(ctx, updateDiditSessionID, arg.SessionID, arg.DiditSessionID)
 	var i VerificationSession
 	err := row.Scan(
 		&i.ID,
@@ -322,7 +311,6 @@ func (q *Queries) UpdateDiditSessionData(ctx context.Context, arg UpdateDiditSes
 		&i.SessionID,
 		&i.Status,
 		&i.DiditSessionID,
-		&i.VerificationUrl,
 		&i.UserEmail,
 		&i.UserFirstName,
 		&i.UserLastName,
@@ -344,7 +332,7 @@ SET
         ELSE completed_at 
     END
 WHERE session_id = $1
-RETURNING id, user_id, session_id, status, didit_session_id, verification_url, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata
+RETURNING id, user_id, session_id, status, didit_session_id, user_email, user_first_name, user_last_name, created_at, updated_at, completed_at, metadata
 `
 
 type UpdateVerificationSessionStatusParams struct {
@@ -361,7 +349,6 @@ func (q *Queries) UpdateVerificationSessionStatus(ctx context.Context, arg Updat
 		&i.SessionID,
 		&i.Status,
 		&i.DiditSessionID,
-		&i.VerificationUrl,
 		&i.UserEmail,
 		&i.UserFirstName,
 		&i.UserLastName,

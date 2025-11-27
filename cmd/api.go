@@ -1,95 +1,111 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"log/slog"
 	"net/http"
+	"strings"
 	"time"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/FelipePn10/crispaybackend/config"
+	"github.com/FelipePn10/crispaybackend/internal/database"
+	"github.com/FelipePn10/crispaybackend/internal/didit"
+	"github.com/FelipePn10/crispaybackend/internal/handlers"
+	"github.com/FelipePn10/crispaybackend/internal/repository"
+
+	"github.com/gin-gonic/gin"
 )
 
-func (app *application) mount() http.Handler {
-	r := chi.NewRouter()
-	r.Use(
-		middleware.RequestID,
-		middleware.RealIP,
-		middleware.Logger,
-		middleware.Recoverer,
-		middleware.Timeout(60*time.Second),
-	)
+type application struct {
+	config *config.Config
+	logger *slog.Logger
+	db     *database.DB
+}
 
-	r.Use(app.traceMiddleware)
-	r.Get("/health", app.healthHandler)
+func (app *application) traceMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := time.Now()
 
-	// r.Route("/v1", func(v1 chi.Router) {
-	// 	v1.Mount("/users", app.userRoutes())
-	// 	// v1.Mount("/billing", app.billingRoutes())
-	// 	// v1.Mount("/auth", app.authRoutes())
-	// })
+		c.Next()
+
+		duration := time.Since(start)
+		app.logger.Info("request completed",
+			slog.String("method", c.Request.Method),
+			slog.String("path", c.Request.URL.Path),
+			slog.Int64("duration_ms", duration.Milliseconds()),
+			slog.String("client_ip", c.ClientIP()),
+			slog.Int("status", c.Writer.Status()),
+		)
+	}
+}
+
+// // Middleware to validate Didit webhook
+// func (app *application) diditMiddleware() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		signature := c.GetHeader("Didit-Signature")
+// 		if signature == "" {
+// 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "missing Didit signature"})
+// 			return
+// 		}
+// 		c.Next()
+// 	}
+// }
+
+func (app *application) mount() *gin.Engine {
+	r := gin.New()
+	r.Use(gin.Recovery())
+	r.Use(app.traceMiddleware())
+
+	// Health check global
+	r.GET("/health", app.healthHandler)
+
+	api := r.Group("/api")
+	{
+		app.diditRoutes(api)
+	}
 
 	return r
 }
 
-func (app *application) healthHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) healthHandler(c *gin.Context) {
 	resp := map[string]any{
 		"status":    "ok",
 		"timestamp": time.Now().UTC(),
 		"service":   "core-api",
 	}
-	app.writeJSON(w, http.StatusOK, resp)
+	c.JSON(http.StatusOK, resp)
 }
 
-func (app *application) writeJSON(w http.ResponseWriter, status int, data map[string]any) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(status)
+func (app *application) diditRoutes(rg *gin.RouterGroup) {
+	repo := repository.NewVerificationRepository(app.db.Queries())
+	diditClient := didit.NewClient(app.config)
 
-	enc := json.NewEncoder(w)
-	enc.SetEscapeHTML(true)
-	if err := enc.Encode(data); err != nil {
-		http.Error(w, `{"error":"failed to write response"}`, http.StatusInternalServerError)
-		return
+	webhookHandler := handlers.NewWebhookHandler(diditClient, app.config, repo)
+
+	// Rotas Didit
+	rg.POST("/webhooks/didit", webhookHandler.HandleVerificationWebhook)
+	rg.POST("/verification/start", webhookHandler.StartVerification)
+	rg.GET("/verification/status/:sessionId", webhookHandler.GetVerificationStatus)
+	rg.GET("/verification/user/:userId", webhookHandler.GetUserVerifications)
+}
+
+func (app *application) run(h *gin.Engine) error {
+	addr := app.config.ServerPort
+	if addr == "" {
+		addr = "6000"
 	}
-}
+	if !strings.HasPrefix(addr, ":") {
+		addr = ":" + addr
+	}
 
-func (app *application) traceMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-
-		next.ServeHTTP(w, r)
-
-		duration := time.Since(start)
-		app.logger.Info("request completed",
-			slog.String("method", r.Method),
-			slog.String("path", r.URL.Path),
-			slog.Int64("duration_ms", duration.Milliseconds()),
-			slog.String("request_id", middleware.GetReqID(r.Context())),
-		)
-	})
-}
-
-// run
-func (app *application) run(h http.Handler) error {
 	srv := &http.Server{
-		Addr:         app.config.addr,
+		Addr:         addr,
 		Handler:      h,
 		WriteTimeout: time.Second * 30,
 		ReadTimeout:  time.Second * 30,
 		IdleTimeout:  time.Minute,
 	}
 
-	log.Printf("Starting server on %s", app.config.addr)
-
+	log.Printf("Starting server on %s", addr)
 	return srv.ListenAndServe()
-}
-
-type application struct {
-	config config
-	logger *slog.Logger
-}
-
-type config struct {
-	addr string
 }

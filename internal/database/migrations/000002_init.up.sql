@@ -1,0 +1,1 @@
+ALTER TABLE verification_sessions DROP COLUMN verification_url;

@@ -14,19 +14,18 @@ import (
 )
 
 type VerificationSession struct {
-	ID              uuid.UUID
-	UserID          string
-	SessionID       string
-	Status          string
-	DiditSessionID  sql.NullString
-	VerificationUrl sql.NullString
-	UserEmail       string
-	UserFirstName   sql.NullString
-	UserLastName    sql.NullString
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
-	CompletedAt     sql.NullTime
-	Metadata        pqtype.NullRawMessage
+	ID             uuid.UUID
+	UserID         string
+	SessionID      string
+	Status         string
+	DiditSessionID sql.NullString
+	UserEmail      string
+	UserFirstName  sql.NullString
+	UserLastName   sql.NullString
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	CompletedAt    sql.NullTime
+	Metadata       pqtype.NullRawMessage
 }
 
 type WebhookEvent struct {

@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql/driver"
 	"encoding/json"
 	"time"
 
@@ -9,65 +8,52 @@ import (
 )
 
 type VerificationRequest struct {
-	UserId    string `json:"user_id" binding:"required"`
+	UserID    string `json:"user_id" binding:"required"`
 	Email     string `json:"email" binding:"required"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
 
-type Verificationresponse struct {
+type VerificationResponse struct {
 	VerificationURL string `json:"verification_url"`
-	SessionID       string `json:"session_id"`
-	Status          string `json:"status"`
+	UserID          string `json:"user_id"`
 }
 
 type WebhookEvent struct {
-	EventType string      `json:"event_type"`
-	Data      WebhookData `json:"data"`
-	Timestamp time.Time   `json:"timestamp"`
+	EventType string          `json:"event_type"`
+	Data      WebhookData     `json:"data"`
+	Timestamp time.Time       `json:"timestamp"`
+	RawData   json.RawMessage `json:"raw_data,omitempty"` // To store the original payload
 }
 
 type WebhookData struct {
-	SessionID string `json:"session_id"`
-	Status    string `json:"status"`
-	UserID    string `json:"user_id"`
+	SessionID string                 `json:"session_id"`
+	Status    string                 `json:"status"`
+	UserID    string                 `json:"user_id,omitempty"`
+	UserData  map[string]interface{} `json:"user_data,omitempty"`
+	Metadata  map[string]interface{} `json:"metadata,omitempty"`
 }
 
 type VerificationSession struct {
-	ID            uuid.UUID  `json:"id"`
-	UserID        string     `json:"user_id"`
-	SessionID     string     `json:"session_id"`
-	DiditSession  string     `json:"didit_session,omitempty"`
-	VeficatonURL  string     `json:"verification_url,omitempty"`
-	Status        string     `json:"status"`
-	UserEmail     string     `json:"user_email"`
-	UserFisrtName string     `json:"user_first_name,omitempty"`
-	UserLastName  string     `json:"user_last_name,omitempty"`
-	CreatedAt     time.Time  `json:"created_at"`
-	UpdatedAt     time.Time  `json:"updated_at"`
-	CompletedAt   *time.Time `json:"completed_at,omitempty"`
+	ID             uuid.UUID  `json:"id"`
+	UserID         string     `json:"user_id"`
+	SessionID      string     `json:"session_id"`
+	DiditSessionID string     `json:"didit_session_id,omitempty"`
+	Status         string     `json:"status"`
+	UserEmail      string     `json:"user_email"`
+	UserFirstName  string     `json:"user_first_name,omitempty"`
+	UserLastName   string     `json:"user_last_name,omitempty"`
+	CreatedAt      time.Time  `json:"created_at"`
+	UpdatedAt      time.Time  `json:"updated_at"`
+	CompletedAt    *time.Time `json:"completed_at,omitempty"`
 }
 
-// JSONB type for handling PostgreSQL JSONB
-type JSONB map[string]interface{}
-
-func (j JSONB) Value() (driver.Value, error) {
-	return json.Marshal(j)
-}
-
-func (j *JSONB) Scan(value interface{}) error {
-	if value == nil {
-		*j = nil
-		return nil
-	}
-	var data []byte
-	switch v := value.(type) {
-	case []byte:
-		data = v
-	case string:
-		data = []byte(v)
-	default:
-		return json.Unmarshal([]byte(v.(string)), j)
-	}
-	return json.Unmarshal(data, j)
+// WebhookEventDB represents the webhook event structure in the database.
+type WebhookEventDB struct {
+	ID        uuid.UUID       `json:"id"`
+	EventType string          `json:"event_type"`
+	SessionID string          `json:"session_id"`
+	Payload   json.RawMessage `json:"payload"`
+	Processed bool            `json:"processed"`
+	CreatedAt time.Time       `json:"created_at"`
 }

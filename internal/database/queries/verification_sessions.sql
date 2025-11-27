@@ -3,12 +3,11 @@ INSERT INTO verification_sessions (
     user_id,
     session_id,
     didit_session_id,
-    verification_url,
     user_email,
     user_first_name,
     user_last_name,
     status
-) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+) VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING *;
 
 -- name: GetVerificationSessionByID :one
@@ -35,11 +34,10 @@ SET
 WHERE session_id = $1
 RETURNING *;
 
--- name: UpdateDiditSessionData :one
+-- name: UpdateDiditSessionID :one
 UPDATE verification_sessions 
 SET 
     didit_session_id = $2,
-    verification_url = $3,
     updated_at = NOW()
 WHERE session_id = $1
 RETURNING *;
