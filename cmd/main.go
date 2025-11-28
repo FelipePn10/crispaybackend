@@ -6,6 +6,8 @@ import (
 
 	"github.com/FelipePn10/crispaybackend/config"
 	"github.com/FelipePn10/crispaybackend/internal/database"
+	"github.com/FelipePn10/crispaybackend/internal/email"
+	"github.com/FelipePn10/crispaybackend/internal/email/service"
 )
 
 func main() {
@@ -20,10 +22,14 @@ func main() {
 	}
 	defer db.Close()
 
+	emailConfig := email.LoadConfigFromEnv()
+	emailService := service.NewEmailService(service.EmailConfig(emailConfig))
+
 	api := application{
-		config: cfg,
-		logger: logger,
-		db:     db,
+		config:       cfg,
+		logger:       logger,
+		db:           db,
+		emailService: emailService,
 	}
 
 	if err := api.run(api.mount()); err != nil {

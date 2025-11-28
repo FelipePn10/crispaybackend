@@ -10,6 +10,7 @@ import (
 	"github.com/FelipePn10/crispaybackend/config"
 	"github.com/FelipePn10/crispaybackend/internal/database"
 	"github.com/FelipePn10/crispaybackend/internal/didit"
+	"github.com/FelipePn10/crispaybackend/internal/email/service"
 	"github.com/FelipePn10/crispaybackend/internal/handlers"
 	"github.com/FelipePn10/crispaybackend/internal/repository"
 
@@ -17,9 +18,10 @@ import (
 )
 
 type application struct {
-	config *config.Config
-	logger *slog.Logger
-	db     *database.DB
+	config       *config.Config
+	logger       *slog.Logger
+	db           *database.DB
+	emailService *service.EmailService
 }
 
 func (app *application) traceMiddleware() gin.HandlerFunc {
@@ -80,7 +82,7 @@ func (app *application) diditRoutes(rg *gin.RouterGroup) {
 	repo := repository.NewVerificationRepository(app.db.Queries())
 	diditClient := didit.NewClient(app.config)
 
-	webhookHandler := handlers.NewWebhookHandler(diditClient, app.config, repo)
+	webhookHandler := handlers.NewWebhookHandler(diditClient, app.config, repo, app.emailService)
 
 	// Rotas Didit
 	rg.POST("/webhooks/didit", webhookHandler.HandleVerificationWebhook)

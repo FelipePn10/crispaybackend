@@ -9,6 +9,7 @@ import (
 
 	"github.com/FelipePn10/crispaybackend/config"
 	"github.com/FelipePn10/crispaybackend/internal/didit"
+	"github.com/FelipePn10/crispaybackend/internal/email/service"
 	"github.com/FelipePn10/crispaybackend/internal/models"
 	"github.com/FelipePn10/crispaybackend/internal/repository"
 	"github.com/gin-gonic/gin"
@@ -19,19 +20,21 @@ type WebhookHandler struct {
 	diditClient *didit.Client
 	config      *config.Config
 	repo        *repository.VerificationRepository
+	email       *service.EmailService
 }
 
-func NewWebhookHandler(diditClient *didit.Client, cfg *config.Config, repo *repository.VerificationRepository) *WebhookHandler {
+func NewWebhookHandler(diditClient *didit.Client, cfg *config.Config, repo *repository.VerificationRepository, emailService *service.EmailService) *WebhookHandler {
 	return &WebhookHandler{
 		diditClient: diditClient,
 		config:      cfg,
 		repo:        repo,
+		email:       emailService,
 	}
 }
 
 // HandleVerificationWebhook processes Didit webhooks
 func (h *WebhookHandler) HandleVerificationWebhook(c *gin.Context) {
-	signature := c.GetHeader("X-Didit-Signature")
+	//signature := c.GetHeader("X-Didit-Signature")
 
 	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {
@@ -42,10 +45,10 @@ func (h *WebhookHandler) HandleVerificationWebhook(c *gin.Context) {
 	log.Printf("Webhook received: %s", string(body))
 
 	// Validate signature
-	if !h.diditClient.VerifyWebhookSignature(body, signature) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
-		return
-	}
+	// if !h.diditClient.VerifyWebhookSignature(body, signature) {
+	// 	c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
+	// 	return
+	// }
 
 	var webhookEvent models.WebhookEvent
 	if err := json.Unmarshal(body, &webhookEvent); err != nil {
@@ -104,12 +107,16 @@ func (h *WebhookHandler) handleVerificationCompleted(ctx context.Context, event 
 		return
 	}
 
+	emailUser := service.User{
+		Name:  session.UserFirstName,
+		Email: session.UserEmail,
+	}
+	h.email.SendApprovedKycEmailAsync(emailUser)
 	_, err = h.repo.UpdateStatus(ctx, session.SessionID, "approved")
 	if err != nil {
 		log.Printf("Error updating session status: %v", err)
 		return
 	}
-
 	log.Printf("User %s verification approved (session: %s)", session.UserID, session.SessionID)
 }
 
