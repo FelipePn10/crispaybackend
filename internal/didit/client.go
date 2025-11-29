@@ -19,7 +19,7 @@ func NewClient(cfg *config.Config) *Client {
 	}
 }
 
-// VerifyWebhookSignature valida a assinatura do webhook usando HMAC-SHA256
+// VerifyWebhookSignature validates the webhook signature using HMAC-SHA256
 func (c *Client) VerifyWebhookSignature(payload []byte, signature string) bool {
 	if signature == "" || c.config.DiditWebhookSecret == "" {
 		return false

@@ -100,8 +100,8 @@ func (h *WebhookHandler) handleVerificationCompleted(ctx context.Context, event 
 	// Use the most recent session.
 	session := sessions[0]
 
-	// Update using the didit_session_id (using UpdateDiditData)
-	_, err = h.repo.UpdateDiditData(ctx, session.SessionID, event.Data.SessionID, "")
+	// Update using the didit_session_id
+	_, err = h.repo.UpdateDiditSessionID(ctx, session.SessionID, event.Data.SessionID)
 	if err != nil {
 		log.Printf("Error updating didit session data: %v", err)
 		return
@@ -142,7 +142,12 @@ func (h *WebhookHandler) handleVerificationFailed(ctx context.Context, event mod
 
 	session := sessions[0]
 
-	_, err = h.repo.UpdateDiditData(ctx, session.SessionID, event.Data.SessionID, "")
+	emailUser := service.User{
+		Name:  session.UserFirstName,
+		Email: session.UserEmail,
+	}
+	h.email.SendFailedKycEmailAsync(emailUser)
+	_, err = h.repo.UpdateDiditSessionID(ctx, session.SessionID, event.Data.SessionID)
 	if err != nil {
 		log.Printf("Error updating didit session data: %v", err)
 		return
@@ -179,7 +184,7 @@ func (h *WebhookHandler) handleVerificationReview(ctx context.Context, event mod
 
 	session := sessions[0]
 
-	_, err = h.repo.UpdateDiditData(ctx, session.SessionID, event.Data.SessionID, "")
+	_, err = h.repo.UpdateDiditSessionID(ctx, session.SessionID, event.Data.SessionID)
 	if err != nil {
 		log.Printf("Error updating didit session data: %v", err)
 		return

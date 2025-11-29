@@ -101,11 +101,6 @@ func (r *VerificationRepository) UpdateDiditSessionID(ctx context.Context, sessi
 	return r.toDomainModel(result), nil
 }
 
-// UpdateDiditData is maintained for compatibility (it calls UpdateDiditSessionID internally)
-func (r *VerificationRepository) UpdateDiditData(ctx context.Context, sessionID string, diditSessionID string, verificationURL string) (*models.VerificationSession, error) {
-	return r.UpdateDiditSessionID(ctx, sessionID, diditSessionID)
-}
-
 func (r *VerificationRepository) ListVerificationSessionsByUserID(ctx context.Context, userID string) ([]*models.VerificationSession, error) {
 	results, err := r.queries.ListVerificationSessionsByUserID(ctx, userID)
 	if err != nil {
