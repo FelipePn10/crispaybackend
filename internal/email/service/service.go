@@ -37,92 +37,165 @@ func (s *EmailService) SendApprovedKycEmail(user User) error {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYC Aprovado!</title>
+    <title>Bem-vindo ao CrisPay</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f7fa; padding: 40px 0;">
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #F7F5F3;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F7F5F3; padding: 40px 20px;">
         <tr>
             <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden;">
-                    <!-- Header com gradiente -->
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 9px; box-shadow: 0px 0px 0px 0.9px rgba(0,0,0,0.08); overflow: hidden; max-width: 100%;">
+                    
                     <tr>
-                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 40px; text-align: center;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 600;">
-                                🎉 Parábens! Seu KYC acaba de ser aprovado!
-                            </h1>
+                        <td style="padding: 42px 40px 32px 40px; border-bottom: 1px solid rgba(55,50,47,0.06);">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <h1 style="color: #2F3037; margin: 0; font-size: 20px; font-weight: 500; letter-spacing: -0.01em;">
+                                            CrisPay
+                                        </h1>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
-                    <!-- Conteúdo -->
                     <tr>
-                        <td style="padding: 40px;">
-                            <h2 style="color: #333333; margin: 0 0 20px 0; font-size: 24px;">
-                                Olá, {{.Name}}! 👋
-                            </h2>
-                            
-                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                                Estamos muito felizes em ter você conosco! Sua conta foi verificada com sucesso e você já pode começar a explorar todos os nossos recursos.
-                            </p>
-                            
-                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
-                                Para começar, aqui estão algumas coisas que você pode fazer:
-                            </p>
-                            
-                            <!-- Cards de recursos -->
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 30px;">
-                                <tr>
-                                    <td style="padding: 20px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 10px;">
-                                        <h3 style="color: #667eea; margin: 0 0 10px 0; font-size: 18px;">
-                                            ✨ Faça sua primeira compra
-                                        </h3>
-                                        <p style="color: #666666; font-size: 14px; line-height: 1.5; margin: 0;">
-                                            Conecte sua Wallet para débitos automáticos!
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 30px;">
-                                <tr>
-                                    <td style="padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
-                                        <h3 style="color: #667eea; margin: 0 0 10px 0; font-size: 18px;">
-                                            🚀 Explore os recursos
-                                        </h3>
-                                        <p style="color: #666666; font-size: 14px; line-height: 1.5; margin: 0;">
-                                            Descubra tudo que nossa plataforma pode fazer por você
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <!-- Botão CTA -->
+                        <td style="padding: 40px 40px 24px 40px;">
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
-                                    <td align="center" style="padding: 20px 0;">
-                                        <a href="#" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block; box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);">
-                                            Acessar Minha Conta
+                                    <td align="center">
+                                        <!-- Badge -->
+                                        <table cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+                                            <tr>
+                                                <td style="padding: 6px 14px; background-color: #ffffff; border: 1px solid rgba(2,6,23,0.08); border-radius: 90px; box-shadow: 0px 0px 0px 4px rgba(55,50,47,0.05);">
+                                                    <span style="color: #37322F; font-size: 12px; font-weight: 500; line-height: 12px;">
+                                                        Seu KYC foi aprovado. Parabéns!
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- Título -->
+                                        <h2 style="color: #49423D; margin: 0 0 16px 0; font-size: 36px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; text-align: center;">
+                                            Sua conta está pronta, {{.Name}}
+                                        </h2>
+                                        
+                                        <!-- Descrição -->
+                                        <p style="color: #605A57; font-size: 16px; line-height: 28px; margin: 0; text-align: center; max-width: 480px;">
+                                            Agora você já pode pagar com cripto em qualquer lugar do mundo. Rápido, seguro e transparente.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="padding: 0 40px 32px 40px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #E0DEDB; border-bottom: 1px solid #E0DEDB;">
+                                <!-- Card 1 -->
+                                <tr>
+                                    <td style="padding: 24px 0; border-bottom: 1px solid rgba(224,222,219,0.5);">
+                                        <h3 style="color: #49423D; margin: 0 0 8px 0; font-size: 14px; font-weight: 600; line-height: 24px;">
+                                            Total transparência
+                                        </h3>
+                                        <p style="color: #605A57; font-size: 13px; line-height: 22px; margin: 0;">
+                                            Acompanhe cada etapa da sua compra: pagamento, conversão e envio. Receba comprovantes e rastreie seu pedido diretamente da loja.
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="padding: 24px 0; border-bottom: 1px solid rgba(224,222,219,0.5);">
+                                        <h3 style="color: #49423D; margin: 0 0 8px 0; font-size: 14px; font-weight: 600; line-height: 24px;">
+                                            Compre com cripto, sem conversão necessária
+                                        </h3>
+                                        <p style="color: #605A57; font-size: 13px; line-height: 22px; margin: 0;">
+                                            Não precisa mais converter BTC, ETH ou USDT para gastar. Pague em cripto — nós cuidamos do resto.
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Card 3 -->
+                                <tr>
+                                    <td style="padding: 24px 0;">
+                                        <h3 style="color: #49423D; margin: 0 0 8px 0; font-size: 14px; font-weight: 600; line-height: 24px;">
+                                            Simplicidade que inspira confiança
+                                        </h3>
+                                        <p style="color: #605A57; font-size: 13px; line-height: 22px; margin: 0;">
+                                            Taxas claras, processo simplificado e suporte humano. Uma experiência de pagamento cripto projetada para quem valoriza conveniência.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="center" style="padding: 32px 40px 40px 40px;">
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td align="center" style="background-color: #37322F; border-radius: 50px; box-shadow: 0px 1px 2px rgba(55,50,47,0.12);">
+                                        <a href="#" style="background-color: #37322F; color: #ffffff; padding: 12px 32px; text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block; border-radius: 50px;">
+                                            Começar a usar
                                         </a>
                                     </td>
                                 </tr>
                             </table>
-                            
-                            <p style="color: #999999; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; text-align: center;">
-                                Se você tiver alguma dúvida, não hesite em nos contatar. Estamos aqui para ajudar!
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="padding: 0 40px 40px 40px;">
+                            <p style="color: #828387; font-size: 14px; line-height: 24px; margin: 0; text-align: center;">
+                                Precisa de ajuda? Nossa equipe está sempre disponível para você.
                             </p>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td style="background-color: #f8f9fa; padding: 30px 40px; text-align: center; border-top: 1px solid #e9ecef;">
-                            <p style="color: #999999; font-size: 14px; margin: 0 0 10px 0;">
-                                © 2025 CrisPay. Todos os direitos reservados.
-                            </p>
-                            <p style="color: #999999; font-size: 12px; margin: 0;">
-                                Você recebeu este email porque concluiu com sucesso o KYC. Não responda a este e-mail.
-                            </p>
+                        <td style="background-color: #F7F5F3; padding: 32px 40px; border-top: 1px solid rgba(55,50,47,0.06);">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td align="center">
+                                        <p style="color: #828387; font-size: 13px; margin: 0 0 8px 0;">
+                                            © 2025 CrisPay. Todos os direitos reservados.
+                                        </p>
+                                        <p style="color: #828387; font-size: 12px; margin: 0;">
+                                            Você recebeu este email porque teve seu KYC aprovado - CrisPay.
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Links do footer -->
+                                <tr>
+                                    <td align="center" style="padding-top: 20px;">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="padding: 0 12px;">
+                                                    <a href="#" style="color: #605A57; font-size: 13px; text-decoration: none;">
+                                                        Produtos
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 12px; border-left: 1px solid rgba(55,50,47,0.12);">
+                                                    <a href="#" style="color: #605A57; font-size: 13px; text-decoration: none;">
+                                                        Pricing
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 12px; border-left: 1px solid rgba(55,50,47,0.12);">
+                                                    <a href="#" style="color: #605A57; font-size: 13px; text-decoration: none;">
+                                                        Docs
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
+                    
                 </table>
             </td>
         </tr>
@@ -172,92 +245,181 @@ func (s *EmailService) SendFailedKycEmail(user User) error {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYC Aprovado!</title>
+    <title>Atualização sobre seu KYC - CrisPay</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f7fa; padding: 40px 0;">
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #F7F5F3;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F7F5F3; padding: 40px 20px;">
         <tr>
             <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden;">
-                    <!-- Header com gradiente -->
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 9px; box-shadow: 0px 0px 0px 0.9px rgba(0,0,0,0.08); overflow: hidden; max-width: 100%;">
+                    
+                    <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 40px; text-align: center;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 600;">
-                                🎉 Parábens! Seu KYC acaba de ser aprovado!
-                            </h1>
+                        <td style="padding: 42px 40px 32px 40px; border-bottom: 1px solid rgba(55,50,47,0.06);">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <h1 style="color: #2F3037; margin: 0; font-size: 20px; font-weight: 500; letter-spacing: -0.01em;">
+                                            CrisPay
+                                        </h1>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
-                    <!-- Conteúdo -->
+                    <!-- Hero Section -->
                     <tr>
-                        <td style="padding: 40px;">
-                            <h2 style="color: #333333; margin: 0 0 20px 0; font-size: 24px;">
-                                Olá, {{.Name}}! 👋
-                            </h2>
-                            
-                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                                Estamos muito felizes em ter você conosco! Sua conta foi verificada com sucesso e você já pode começar a explorar todos os nossos recursos.
-                            </p>
-                            
-                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
-                                Para começar, aqui estão algumas coisas que você pode fazer:
-                            </p>
-                            
-                            <!-- Cards de recursos -->
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 30px;">
-                                <tr>
-                                    <td style="padding: 20px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 10px;">
-                                        <h3 style="color: #667eea; margin: 0 0 10px 0; font-size: 18px;">
-                                            ✨ Faça sua primeira compra
-                                        </h3>
-                                        <p style="color: #666666; font-size: 14px; line-height: 1.5; margin: 0;">
-                                            Conecte sua Wallet para débitos automáticos!
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 30px;">
-                                <tr>
-                                    <td style="padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
-                                        <h3 style="color: #667eea; margin: 0 0 10px 0; font-size: 18px;">
-                                            🚀 Explore os recursos
-                                        </h3>
-                                        <p style="color: #666666; font-size: 14px; line-height: 1.5; margin: 0;">
-                                            Descubra tudo que nossa plataforma pode fazer por você
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <!-- Botão CTA -->
+                        <td style="padding: 40px 40px 24px 40px;">
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
-                                    <td align="center" style="padding: 20px 0;">
-                                        <a href="#" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block; box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);">
-                                            Acessar Minha Conta
+                                    <td align="center">
+                                        <!-- Badge de Atenção -->
+                                        <table cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+                                            <tr>
+                                                <td style="padding: 6px 14px; background-color: #FFF8F0; border: 1px solid rgba(217, 119, 6, 0.2); border-radius: 90px; box-shadow: 0px 0px 0px 4px rgba(217, 119, 6, 0.05);">
+                                                    <span style="color: #92400E; font-size: 12px; font-weight: 500; line-height: 12px;">
+                                                        Ação necessária
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- Título -->
+                                        <h2 style="color: #49423D; margin: 0 0 16px 0; font-size: 36px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; text-align: center;">
+                                            Não conseguimos verificar sua identidade
+                                        </h2>
+                                        
+                                        <!-- Descrição -->
+                                        <p style="color: #605A57; font-size: 16px; line-height: 28px; margin: 0; text-align: center; max-width: 480px;">
+                                            Olá, {{.Name}}. Infelizmente, não foi possível concluir a verificação da sua conta. Veja os detalhes abaixo.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Motivos da Rejeição -->
+                    <tr>
+                        <td style="padding: 0 40px 32px 40px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #E0DEDB; border-bottom: 1px solid #E0DEDB;">
+                                <!-- Card 1 -->
+                                <tr>
+                                    <td style="padding: 24px 0; border-bottom: 1px solid rgba(224,222,219,0.5);">
+                                        <h3 style="color: #49423D; margin: 0 0 8px 0; font-size: 14px; font-weight: 600; line-height: 24px;">
+                                            Motivo da rejeição
+                                        </h3>
+                                        <p style="color: #605A57; font-size: 13px; line-height: 22px; margin: 0;">
+                                            {{.RejectionReason}}
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Card 2 -->
+                                <tr>
+                                    <td style="padding: 24px 0; border-bottom: 1px solid rgba(224,222,219,0.5);">
+                                        <h3 style="color: #49423D; margin: 0 0 8px 0; font-size: 14px; font-weight: 600; line-height: 24px;">
+                                            O que você precisa fazer
+                                        </h3>
+                                        <p style="color: #605A57; font-size: 13px; line-height: 22px; margin: 0;">
+                                            Envie novos documentos com melhor qualidade: foto nítida, boa iluminação, e certifique-se de que todos os dados estão legíveis.
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Card 3 -->
+                                <tr>
+                                    <td style="padding: 24px 0;">
+                                        <h3 style="color: #49423D; margin: 0 0 8px 0; font-size: 14px; font-weight: 600; line-height: 24px;">
+                                            Precisa de ajuda?
+                                        </h3>
+                                        <p style="color: #605A57; font-size: 13px; line-height: 22px; margin: 0;">
+                                            Nossa equipe de suporte está disponível para esclarecer dúvidas e ajudá-lo a completar o processo com sucesso.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- CTAs -->
+                    <tr>
+                        <td align="center" style="padding: 32px 40px 40px 40px;">
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td align="center" style="background-color: #37322F; border-radius: 50px; box-shadow: 0px 1px 2px rgba(55,50,47,0.12); margin-bottom: 16px;">
+                                        <a href="#" style="background-color: #37322F; color: #ffffff; padding: 12px 32px; text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block; border-radius: 50px;">
+                                            Enviar novos documentos
                                         </a>
                                     </td>
                                 </tr>
                             </table>
                             
-                            <p style="color: #999999; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; text-align: center;">
-                                Se você tiver alguma dúvida, não hesite em nos contatar. Estamos aqui para ajudar!
+                            <table cellpadding="0" cellspacing="0" style="margin-top: 12px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="#" style="color: #605A57; padding: 8px 16px; text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block;">
+                                            Falar com o suporte →
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Mensagem de suporte -->
+                    <tr>
+                        <td style="padding: 0 40px 40px 40px;">
+                            <p style="color: #828387; font-size: 14px; line-height: 24px; margin: 0; text-align: center;">
+                                Estamos aqui para ajudar você a completar este processo.<br/>Responda este email ou acesse nossa central de ajuda.
                             </p>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td style="background-color: #f8f9fa; padding: 30px 40px; text-align: center; border-top: 1px solid #e9ecef;">
-                            <p style="color: #999999; font-size: 14px; margin: 0 0 10px 0;">
-                                © 2025 CrisPay. Todos os direitos reservados.
-                            </p>
-                            <p style="color: #999999; font-size: 12px; margin: 0;">
-                                Você recebeu este email porque concluiu com sucesso o KYC. Não responda a este e-mail.
-                            </p>
+                        <td style="background-color: #F7F5F3; padding: 32px 40px; border-top: 1px solid rgba(55,50,47,0.06);">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td align="center">
+                                        <p style="color: #828387; font-size: 13px; margin: 0 0 8px 0;">
+                                            © 2025 CrisPay. Todos os direitos reservados.
+                                        </p>
+                                        <p style="color: #828387; font-size: 12px; margin: 0;">
+                                            Você recebeu este email sobre a verificação da sua conta CrisPay.
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Links do footer -->
+                                <tr>
+                                    <td align="center" style="padding-top: 20px;">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="padding: 0 12px;">
+                                                    <a href="#" style="color: #605A57; font-size: 13px; text-decoration: none;">
+                                                        Produtos
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 12px; border-left: 1px solid rgba(55,50,47,0.12);">
+                                                    <a href="#" style="color: #605A57; font-size: 13px; text-decoration: none;">
+                                                        Pricing
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 12px; border-left: 1px solid rgba(55,50,47,0.12);">
+                                                    <a href="#" style="color: #605A57; font-size: 13px; text-decoration: none;">
+                                                        Docs
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
+                    
                 </table>
             </td>
         </tr>
@@ -265,7 +427,7 @@ func (s *EmailService) SendFailedKycEmail(user User) error {
 </body>
 </html>
 `
-	tmpl, err := template.New("approved").Parse(htmlTemplate)
+	tmpl, err := template.New("reproved").Parse(htmlTemplate)
 	if err != nil {
 		return fmt.Errorf("error parse template")
 	}
@@ -278,7 +440,7 @@ func (s *EmailService) SendFailedKycEmail(user User) error {
 	headers := make(map[string]string)
 	headers["From"] = fmt.Sprintf("%s <%s>", s.config.SenderName, s.config.SenderEmail)
 	headers["To"] = user.Email
-	headers["Subject"] = "KYC Aprovado. Parábens!"
+	headers["Subject"] = "KYC Reprovado."
 	headers["MIME-Version"] = "1.0"
 	headers["Content-Type"] = "text/html; charset=UTF-8"
 
