@@ -1,6 +1,7 @@
 # Crispay Backend
 
 Bem-vindo ao Crispay Backend — um serviço backend em Go que gerencia verificações KYC/AML utilizando a plataforma **Didit**. Este README descreve a estrutura do projeto, configuração, execução, endpoints, testes, migrações e instruções de desenvolvimento.
+
 ---
 
 ## Sumário
